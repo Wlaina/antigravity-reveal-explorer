@@ -9,7 +9,7 @@ description: 检查、维护或重新部署 Antigravity 右键「在资源管理
 
 ## 检查插件与补丁状态
 
-当用户询问插件是否生效、怀疑客户端更新冲掉了补丁，或想确认与中文汉化（`AG_ZH`）/ 猫娘观察台（`gemini-neko-cockpit`）的兼容性时，在插件目录下运行：
+当用户询问插件是否生效、怀疑客户端更新冲掉了补丁，或排查右键菜单问题时，在插件目录下运行：
 
 ```bash
 node setup.cjs --check
@@ -21,7 +21,6 @@ node setup.cjs --check
 
 - `pluginInstalled` / `skillInstalled`：插件清单与 Skill 文件是否已部署。
 - `asarStatus.revealMainPatched` / `asarStatus.revealPreloadPatched`：客户端 `resources/app.asar` 是否已激活主进程与渲染层注入块。
-- `asarStatus.zhLocalizationIntact` / `asarStatus.nekoHudIntact`：中文汉化与猫娘观察台补丁是否完整保留。
 - `asarStatus.stagedReady` / `asarStatus.stagedValid`：是否存在待应用的已校验暂存包 `app.asar.reveal-staged`。
 
 ## 从 GitHub 更新与重新打补丁
@@ -36,7 +35,7 @@ node setup.cjs
 
 ## 安全卸载
 
-如需移除本插件及其 ASAR 注入块（不破坏中文汉化与猫娘观察台补丁），可引导用户双击 `双击卸载右键资源管理器插件.bat`，或在关闭客户端后执行：
+如需移除本插件及其 ASAR 注入块并恢复客户端文件，可引导用户双击 `双击卸载右键资源管理器插件.bat`，或在关闭客户端后执行：
 
 ```bash
 node setup.cjs --uninstall

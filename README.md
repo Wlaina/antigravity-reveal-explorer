@@ -20,7 +20,7 @@
   2. 对话中的 `file://` 链接、行内 `<code>` 路径、纯文件名与文件卡片直接弹出 Claude Desktop 风格原生菜单。
   3. 兼容页面内基于 DOM / Radix 的浮层菜单（同步追加一级「复制文件路径」与「在资源管理器中显示」）。
 - **智能工作区路径解析**：自动结合 `~/.gemini/config/projects/*.json`、当前对话产物目录（`~/.gemini/antigravity/brain/<convId>/`）与当前页面已有链接目录，在限定深度与 60ms 时间预算内精确匹配相对路径与纯文件名。
-- **零冲突共存**：仅在 `app.asar` 内的 `dist/main.js` 和 `dist/preload.js` 末尾通过独立标记块 `// ===== AG_REVEAL_EXPLORER_BEGIN =====` ~ `END` 注入，**绝不修改 `dist/ipcHandlers.js`**，完整保留中文汉化补丁与 `gemini-neko-cockpit` 猫娘观察台补丁。
+- **无损独立注入**：通过独立标记块 `// ===== AG_REVEAL_EXPLORER_BEGIN =====` ~ `END` 写入 `dist/main.js` 与 `dist/preload.js`，自动校验 SHA-256 完整性并支持干净卸载，不影响客户端原有文件与其余内容。
 
 ---
 
@@ -78,7 +78,7 @@ node setup.cjs --check
 ## 🔄 客户端更新后恢复与安全卸载
 
 - **Antigravity 更新后补丁失效**：客户端官方更新会覆盖 `resources/app.asar`，只需再次双击 `双击安装右键资源管理器插件.bat` 即可恢复。
-- **安全卸载**：双击运行 `双击卸载右键资源管理器插件.bat`（或执行 `node setup.cjs --uninstall --kill --relaunch`），会自动剥离本插件注入块并完整保留中文汉化与猫娘观察台补丁。
+- **安全卸载**：双击运行 `双击卸载右键资源管理器插件.bat`（或执行 `node setup.cjs --uninstall --kill --relaunch`），会自动剥离本插件注入块并恢复 `app.asar`。
 
 ---
 

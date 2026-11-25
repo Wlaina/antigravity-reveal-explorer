@@ -128,7 +128,7 @@ function buildPatchedAsar(resourcesDir, stripOnly = false) {
   const asarPath = path.join(resourcesDir, 'app.asar');
   const stagedPath = path.join(resourcesDir, STAGED_FILENAME);
   const revealBakPath = path.join(resourcesDir, BACKUP_FILENAME);
-  const zhBakPath = path.join(resourcesDir, 'app.asar.bak');
+  const existingBakPath = path.join(resourcesDir, 'app.asar.bak');
 
   if (!fs.existsSync(asarPath)) {
     return { ok: false, error: `app.asar not found in ${resourcesDir}` };
@@ -141,7 +141,7 @@ function buildPatchedAsar(resourcesDir, stripOnly = false) {
   try {
     const sourceCopy = path.join(buildDir, 'source.asar');
     fs.copyFileSync(asarPath, sourceCopy);
-    if (!fs.existsSync(revealBakPath) && !fs.existsSync(zhBakPath)) {
+    if (!fs.existsSync(revealBakPath) && !fs.existsSync(existingBakPath)) {
       fs.copyFileSync(asarPath, revealBakPath);
     }
     const candidatePath = path.join(buildDir, 'candidate.asar');
@@ -246,23 +246,11 @@ function inspectArchiveMarkers(archivePath) {
   const layout = readAsarLayout(archivePath);
   const mainFile = layout.files.get('dist/main.js');
   const preloadFile = layout.files.get('dist/preload.js');
-  const ipcFile = layout.files.get('dist/ipcHandlers.js');
   const mainHasReveal = Boolean(mainFile && mainFile.body && mainFile.body.includes(Buffer.from(BEGIN_MARKER, 'utf8')));
   const preloadHasReveal = Boolean(preloadFile && preloadFile.body && preloadFile.body.includes(Buffer.from(BEGIN_MARKER, 'utf8')));
-  const zhIntact = Boolean(
-    (preloadFile && preloadFile.body && (
-      preloadFile.body.includes(Buffer.from('AG_ZH_BEGIN:engine', 'utf8')) ||
-      preloadFile.body.includes(Buffer.from('首页问候语', 'utf8'))
-    )) ||
-    (ipcFile && ipcFile.body && ipcFile.body.includes(Buffer.from('contextMenuTranslationMap', 'utf8')))
-  );
-  const nekoMain = Boolean(mainFile && mainFile.body && mainFile.body.includes(Buffer.from('GEMINI_NEKO_HUD_BEGIN', 'utf8')));
-  const nekoPreload = Boolean(preloadFile && preloadFile.body && preloadFile.body.includes(Buffer.from('GEMINI_NEKO_HUD_BEGIN', 'utf8')));
   return {
     revealMainPatched: mainHasReveal,
-    revealPreloadPatched: preloadHasReveal,
-    zhLocalizationIntact: zhIntact,
-    nekoHudIntact: nekoMain && nekoPreload
+    revealPreloadPatched: preloadHasReveal
   };
 }
 
@@ -272,8 +260,6 @@ function checkAsarStatus(resourcesDir) {
     asarExists: false,
     revealMainPatched: false,
     revealPreloadPatched: false,
-    zhLocalizationIntact: false,
-    nekoHudIntact: false,
     stagedReady: false,
     stagedValid: false
   };
@@ -285,11 +271,7 @@ function checkAsarStatus(resourcesDir) {
   if (out.stagedReady) {
     try {
       const stagedInfo = inspectArchiveMarkers(stagedPath);
-      out.stagedValid = Boolean(
-        stagedInfo.revealMainPatched &&
-        stagedInfo.revealPreloadPatched &&
-        (!out.zhLocalizationIntact || stagedInfo.zhLocalizationIntact)
-      );
+      out.stagedValid = Boolean(stagedInfo.revealMainPatched && stagedInfo.revealPreloadPatched);
     } catch {
       out.stagedValid = false;
     }
@@ -301,23 +283,8 @@ function checkAsarStatus(resourcesDir) {
     const liveInfo = inspectArchiveMarkers(asarPath);
     out.revealMainPatched = liveInfo.revealMainPatched;
     out.revealPreloadPatched = liveInfo.revealPreloadPatched;
-    out.zhLocalizationIntact = liveInfo.zhLocalizationIntact;
-    out.nekoHudIntact = liveInfo.nekoHudIntact;
   } catch {}
 
-  if (out.stagedReady) {
-    try {
-      const stagedInfo = inspectArchiveMarkers(stagedPath);
-      out.stagedValid = Boolean(
-        stagedInfo.revealMainPatched &&
-        stagedInfo.revealPreloadPatched &&
-        (!out.zhLocalizationIntact || stagedInfo.zhLocalizationIntact) &&
-        (!out.nekoHudIntact || stagedInfo.nekoHudIntact)
-      );
-    } catch {
-      out.stagedValid = false;
-    }
-  }
   return out;
 }
 

@@ -2,7 +2,7 @@
   "name": "ag-reveal-in-explorer",
   "displayName": "右键在资源管理器中显示",
   "version": "1.1.0",
-  "description": "在 Google Antigravity 中为聊天区文件链接、文件路径、行内代码路径及文件卡片提供与 Claude Desktop 一致的右键菜单：支持一级「在资源管理器中显示」与「复制文件路径」、作为上下文附加、复制更多（文件名/相对路径/file:// 链接）以及使用默认应用或终端打开，完整兼容中文汉化补丁与猫娘观察台。",
+  "description": "在 Google Antigravity 中为聊天区文件链接、文件路径、行内代码路径及文件卡片提供与 Claude Desktop 一致的右键菜单：支持一级「在资源管理器中显示」与「复制文件路径」、作为上下文附加、复制更多（文件名/相对路径/file:// 链接）以及使用默认应用或终端打开。",
   "author": {
     "name": "Wlaina",
     "url": "https://github.com/Wlaina"

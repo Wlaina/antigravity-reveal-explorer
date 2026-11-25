@@ -6,7 +6,6 @@ echo   Antigravity 右键「在资源管理器中显示」插件 一键安装程
 echo ============================================================
 echo.
 echo 正在部署插件文件、生成校验通过的 ASAR 补丁包并重启 Antigravity...
-echo （会自动保留中文汉化补丁与猫娘观察台补丁）
 echo.
 node setup.cjs --kill --relaunch
 if errorlevel 1 (

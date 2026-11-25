@@ -147,6 +147,10 @@ function runAsarRoundTripTests() {
     const workAsar = path.join(tmpResDir, 'app.asar');
     fs.copyFileSync(realAsar, workAsar);
 
+    const origLayout = readAsarLayout(workAsar);
+    const origMainClean = setup.stripRevealMarkers(origLayout.files.get('dist/main.js').body.toString('utf8')) + '\n';
+    const origPreloadClean = setup.stripRevealMarkers(origLayout.files.get('dist/preload.js').body.toString('utf8')) + '\n';
+
     // 1. 第一次打补丁
     const patch1 = setup.buildPatchedAsar(tmpResDir, false);
     assert.equal(patch1.ok, true);
@@ -156,8 +160,6 @@ function runAsarRoundTripTests() {
     const markers1 = setup.inspectArchiveMarkers(workAsar);
     assert.equal(markers1.revealMainPatched, true);
     assert.equal(markers1.revealPreloadPatched, true);
-    assert.equal(markers1.zhLocalizationIntact, true);
-    assert.equal(markers1.nekoHudIntact, true);
 
     const layout1 = readAsarLayout(workAsar);
     const mainBuf1 = layout1.files.get('dist/main.js').body;
@@ -181,7 +183,7 @@ function runAsarRoundTripTests() {
     assert.equal(mainBuf1.equals(layout2.files.get('dist/main.js').body), true, 'Idempotent patch mismatch on dist/main.js');
     assert.equal(preloadBuf1.equals(layout2.files.get('dist/preload.js').body), true, 'Idempotent patch mismatch on dist/preload.js');
 
-    // 4. 卸载剥离验证（保留中文汉化与猫娘观察台）
+    // 4. 卸载剥离验证（确认原有代码主体完整还原）
     const unpatch = setup.buildPatchedAsar(tmpResDir, true);
     assert.equal(unpatch.ok, true);
     fs.copyFileSync(unpatch.stagedPath, workAsar);
@@ -190,10 +192,13 @@ function runAsarRoundTripTests() {
     const markersAfterUninstall = setup.inspectArchiveMarkers(workAsar);
     assert.equal(markersAfterUninstall.revealMainPatched, false);
     assert.equal(markersAfterUninstall.revealPreloadPatched, false);
-    assert.equal(markersAfterUninstall.zhLocalizationIntact, true);
-    assert.equal(markersAfterUninstall.nekoHudIntact, true);
 
     const layout3 = readAsarLayout(workAsar);
+    const mainAfterText = layout3.files.get('dist/main.js').body.toString('utf8');
+    const preloadAfterText = layout3.files.get('dist/preload.js').body.toString('utf8');
+    assert.equal(mainAfterText, origMainClean, 'Uninstall must restore original dist/main.js cleanly');
+    assert.equal(preloadAfterText, origPreloadClean, 'Uninstall must restore original dist/preload.js cleanly');
+
     fs.writeFileSync(path.join(chkDir, 'main_clean.js'), layout3.files.get('dist/main.js').body);
     fs.writeFileSync(path.join(chkDir, 'preload_clean.js'), layout3.files.get('dist/preload.js').body);
     execFileSync(process.execPath, ['--check', path.join(chkDir, 'main_clean.js')], { stdio: 'pipe' });

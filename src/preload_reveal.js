@@ -44,7 +44,7 @@
 
     function isInsideIgnoredArea(el) {
       if (!el || typeof el.closest !== 'function') return false;
-      return Boolean(el.closest('#gemini-neko-pet-root, #gemini-neko-observer-modal'));
+      return Boolean(el.closest('[data-ag-reveal-ignore]'));
     }
 
     function isEditableElement(el) {
