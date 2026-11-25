@@ -1,9 +1,9 @@
 # ag-reveal-in-explorer · Antigravity 右键在资源管理器中显示
 
-[![version](https://img.shields.io/badge/version-v1.1.0-6366f1.svg)](https://github.com/Wlaina/antigravity-reveal-explorer/releases)
+[![version](https://img.shields.io/badge/version-v1.1.1-6366f1.svg)](https://github.com/Wlaina/antigravity-reveal-explorer/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-为 **Google Antigravity 2.0**（已实测适配 `2.35.2`）提供与 **Claude Desktop** 一致的右键文件菜单体验：在对话消息里的文件链接（`file://`）、代码路径（`src/index.ts`、`C:\...`、`~/...`）、纯文件名（如 `女之旅.epub`、`rules.md`）或文件卡片上点击鼠标右键，即可直接弹出或追加以下操作：
+为 **Google Antigravity 2.0**（已实测适配 `2.35.2`）提供与 **Claude Desktop** 一致的右键文件菜单体验：在对话消息里的文件链接（`file://`）、代码路径（`src/index.ts`、`C:\...`、`~/...`）、纯文件名（如 `report.pdf`、`rules.md`）或文件卡片上点击鼠标右键，即可直接弹出或追加以下操作：
 
 - **作为上下文附加**：将路径快速填入底部对话输入框
 - **复制文件路径**（v1.1.0 提升至一级菜单）：一键复制本地规范化完整路径
@@ -13,7 +13,7 @@
 
 ---
 
-## ✨ 特性与兼容性
+## ✨ 功能特性
 
 - **三路无缝菜单集成**：
   1. 自动增强 Antigravity 原生 `window:show-context-menu` 右键菜单，按需补齐「复制文件路径」与「在资源管理器中显示」（若原菜单已包含对应项则绝不重复添加）。
