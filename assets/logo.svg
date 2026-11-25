@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="agFolderGrad" x1="18" y1="24" x2="108" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="55%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="agFolderTop" x1="16" y1="24" x2="88" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7DD3FC"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer folder back & tab (~10% safe margin within 128x128) -->
+  <path d="M16 32C16 26.477 20.477 22 26 22H48.5C51.6 22 54.52 23.44 56.41 25.9L61.2 32.1C62.14 33.33 63.6 34.05 65.15 34.05H102C107.523 34.05 112 38.527 112 44.05V92C112 97.523 107.523 102 102 102H26C20.477 102 16 97.523 16 92V32Z" fill="url(#agFolderTop)" stroke="#1E1B4B" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Folder front body -->
+  <rect x="16" y="42" width="96" height="60" rx="10" fill="url(#agFolderGrad)" stroke="#1E1B4B" stroke-width="3.5"/>
+  <!-- Subtle file highlight inside -->
+  <rect x="28" y="54" width="44" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.9"/>
+  <rect x="28" y="68" width="32" height="6.5" rx="3.25" fill="#E0E7FF" fill-opacity="0.78"/>
+  <!-- Location / reveal badge & cursor arrow -->
+  <circle cx="88" cy="86" r="22" fill="#0F172A" stroke="#F8FAFC" stroke-width="3.5"/>
+  <path d="M81 74L100 84.5L90.8 87.2L87.8 96.5L81 74Z" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round"/>
+</svg>
